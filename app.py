@@ -1,7 +1,13 @@
 import streamlit as st
+import uuid
+
+from utils import *
+
+if 'unique_id' not in st.session_state:
+    st.session_state['unique_id'] = ''
 
 def main():
-    st.set_page_config(page_title="AI Resume Screener")
+    # st.set_page_config(page_title="AI Resume Screener")
     st.title("AI Resume Screener")
     
     job_description = st.text_area("Job Description of the role", key="job_description")
@@ -13,5 +19,17 @@ def main():
 
     if submit_button:
         with st.spinner("Analysing Resumes..."):
+
+            st.session_state['unique_id'] = uuid.uuid4().hex
+            # st.write(st.session_state['unique_id'])
+
+            docs = create_docs(pdf, st.session_state['unique_id'])
+            # st.write(docs)
+
+            
+
             st.success("Completed")
-            st.balloons()
+
+
+if __name__ == "__main__":
+    main()
