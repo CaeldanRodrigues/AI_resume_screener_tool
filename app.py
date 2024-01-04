@@ -11,9 +11,9 @@ def main():
     st.title("AI Resume Screener")
     
     job_description = st.text_area("Job Description of the role", key="job_description")
-    document_count = st.text_input("Number of Resumes to return", key="document_count")
+    resume_count = st.text_input("Number of Resumes to return", key="resume_count")
 
-    pdf = st.file_uploader("Upload resume(s)", type=["pdf"],accept_multiple_files=True)
+    pdf = st.file_uploader("Upload resume(s)", type=["pdf"], accept_multiple_files=True)
 
     submit_button = st.button("Analyse")
 
@@ -25,8 +25,12 @@ def main():
 
             docs = create_docs(pdf, st.session_state['unique_id'])
             # st.write(docs)
+            embeddings = create_embeddings()
+            push_to_pinecone("gcp-starter", "test-index", embeddings, docs)
 
-            
+            relevant_docs = similar_docs(job_description, resume_count, "gcp-starter", "test-index", embeddings, st.session_state['unique_id'])
+
+            st.write(relevant_docs)
 
             st.success("Completed")
 

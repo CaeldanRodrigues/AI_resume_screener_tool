@@ -10,6 +10,7 @@ tiktoken = "*"
 streamlit = "*"
 pypdf = "*"
 pinecone-client = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
