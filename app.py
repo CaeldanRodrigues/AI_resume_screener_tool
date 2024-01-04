@@ -1,5 +1,7 @@
 import streamlit as st
 import uuid
+from dotenv import load_dotenv
+load_dotenv()
 
 from utils import *
 
@@ -30,7 +32,18 @@ def main():
 
             relevant_docs = similar_docs(job_description, resume_count, "gcp-starter", "test-index", embeddings, st.session_state['unique_id'])
 
-            st.write(relevant_docs)
+            # st.write(relevant_docs)
+
+            for item in range(len(relevant_docs)):
+                st.subheader("Resume " + str(item + 1))
+
+                st.write("file: " + relevant_docs[item].metadata['name'])
+
+                with st.expander("view more"):
+                    # st.info("match score: " + str(relevant_docs[item][1]))
+
+                    summary = get_summary(relevant_docs[item])
+                    st.write("Summary: " + summary)
 
             st.success("Completed")
 

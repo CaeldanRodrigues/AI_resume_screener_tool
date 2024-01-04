@@ -83,3 +83,7 @@ def similar_docs(query, resume_count, environment, index_name, embeddings, uniqu
 
 def get_summary(doc):
     llm = OpenAI()
+    chain = load_summarize_chain(llm, chain_type="map_reduce")
+    summary = chain.run([doc])
+
+    return summary
